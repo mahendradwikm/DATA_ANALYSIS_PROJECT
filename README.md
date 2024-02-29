@@ -17,7 +17,7 @@ Proyek ini bertujuan untuk melakukan analisis terhadap dataset E-Commerce publik
 1. Clone repository ini ke komputer lokal Anda menggunakan perintah berikut:
 
    ```shell
-   git clone https://github.com/Mazwan98/dicoding.git](https://github.com/mahendradwikm/DATA_ANALYSIS_PROJECT.git
+   git clone https://github.com/mahendradwikm/DATA_ANALYSIS_PROJECT.git
    ```
 
 ## Acknowledgements
