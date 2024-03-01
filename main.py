@@ -9,23 +9,54 @@ import datetime as dt
 #load data csv
 all_df = pd.read_csv("all_data.csv")
 
-# ======================================== SideBar =======================================
+import streamlit as st
 
+import streamlit as st
+
+import streamlit as st
+
+# Sidebar
 with st.sidebar:
+    st.markdown(
+        """
+        <div style='display: flex; align-items: center; justify-content: center;'>
+            <img src='https://github.com/mahendradwikm/progres-belajarku/blob/main/logo.png' alt='Logo' style='width: 80px; height: 80px;'>
+            <div style='margin-left: 10px; font-size: 24px; font-weight: bold; color: #53ECEC;'>Mahendra E-Commerce Projects</div>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
     
-    # Menambahkan logo perusahaan
-    st.image("https://github.com/dicodingacademy/assets/raw/main/logo.png")
-    st.write('Mahendra Build dis')
-    # Define the URL and link text
-    url = "https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce"
-    link_text = "Kaggle E-Commerce Dataset "
+    st.markdown("<hr style='margin: 15px 0; border-color: #53ECEC;'>", unsafe_allow_html=True)
 
-    # Create the link
-    st.write('E-Commerce Dataset')
-    st.write(f"[{link_text}]({url})")
-   
+    st.markdown("### E-Commerce Dataset")
+    st.markdown("[Kaggle E-Commerce Dataset](https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce)")
 
-# change type str/obj -> datetime
+    st.markdown("<hr style='margin: 15px 0; border-color: #53ECEC;'>", unsafe_allow_html=True)
+
+    st.markdown("### About")
+    st.markdown(
+        """
+        This dashboard displays insights from the E-Commerce dataset. 
+        You can explore various visualizations and analyze the data accordingly.
+        """
+    )
+
+    st.markdown("<hr style='margin: 15px 0; border-color: #53ECEC;'>", unsafe_allow_html=True)
+
+    st.markdown("### Contact")
+    st.markdown(
+        """
+        If you have any questions or feedback, feel free to reach out at:
+        - Email: [mahendradwikm@gmail.com](mailto:mahendradwikm@gmail.com)
+        - Linkedin: [mahendradwikm](https://www.linkedin.com/in/mahendradwikm)
+        """,
+        unsafe_allow_html=True
+    )
+
+
+
+# UBAH TIPE str/obj -> datetime
 datetime_columns = ["order_approved_at"]
 for column in datetime_columns:
     all_df[column] = pd.to_datetime(all_df[column])
@@ -34,7 +65,7 @@ def number_order_per_month(df):
     monthly_df = df.resample(rule='M', on='order_approved_at').agg({
         "order_id": "size",
     })
-    monthly_df.index = monthly_df.index.strftime('%B') #mengubah format order_approved_at menjadi Tahun-Bulan
+    monthly_df.index = monthly_df.index.strftime('%B')
     monthly_df = monthly_df.reset_index()
     monthly_df.rename(columns={
         "order_id": "order_count",
@@ -72,13 +103,13 @@ def customer_spend_df(df):
     sum_spend_df = sum_spend_df.sort_values('total_spend').drop_duplicates('order_approved_at', keep='last')
     custom_order = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
 
-    # Create a categorical column based on the custom order
+
     sum_spend_df['month_cat'] = pd.Categorical(sum_spend_df['order_approved_at'], categories=custom_order, ordered=True)
 
-    # Sort the DataFrame based on the categorical column
+
     sorted_df = sum_spend_df.sort_values(by='month_cat')
 
-    # Remove the 'month_cat' column if you don't need it
+
     sorted_df = sorted_df.drop(columns=['month_cat'])
     return sorted_df
 
@@ -101,16 +132,6 @@ def create_rfm(df):
     now=dt.datetime(2018,10,20)
 
 
-
-    #alternate code 1
-    #df['order_purchase_timestamp'] = pd.to_datetime(df['order_purchase_timestamp'])
-    #rfm = df.groupby('customer_id',as_index=False).agg({
-    #    'order_purchase_timestamp' : lambda x : (now - x.max()).days,
-    #    'order_id': lambda x : len(x),
-    #    'price': lambda x : x.sum() 
-    #}) 
-
-    #alternate code 2
     df['order_purchase_timestamp'] = pd.to_datetime(df['order_purchase_timestamp'])
     # Group by 'customer_id' and calculate Recency, Frequency, and Monetary
     recency = (now - df.groupby('customer_id')['order_purchase_timestamp'].max()).dt.days
@@ -131,31 +152,35 @@ def create_rfm(df):
     return rfm
 
 
-
-    
-
-
-# calling functions
+# MEMANGGIL KEMBALI functions
 daily_orders_df=number_order_per_month(all_df)
 most_and_least_products_df=create_by_product_df(all_df)
 rating_service,max_score,df_rating_service=rating_cust_df(all_df)
 customer_spend_df=customer_spend_df(all_df)
 rfm=create_rfm(all_df)
 
-# ========================================================================================
-# ======================================== Header ========================================
-# ========================================================================================
 
-st.header('DASHBOARD ANALISIS DATA E-COMMERCE :rocket:')
+# Header
+st.markdown(
+    """
+    <div style='text-align: center;'>
+        <h1 style='color: #53ECEC;'>DASHBOARD ANALISIS DATA E-COMMERCE 🙏</h1>
+    </div>
+    """,
+    unsafe_allow_html=True
+)
 
-# ========================================================================================
-# ====================================== Sub Header ======================================
-# ========================================================================================
+# Sub Header
+st.markdown(
+    """
+    <div style='text-align: center;'>
+        <h2 style='color: ##53ECEC;'>Visualisasi Data E-Commerce</h2>
+    </div>
+    """,
+    unsafe_allow_html=True
+)
 
-
-# ========================================================================================
-# ================================= Section Month Order ==================================
-# ========================================================================================
+# ================================= PERFORMA PENJUALAN ===================================
 
 st.subheader('Performa Penjualan')
 col1, col2 = st.columns(2)
@@ -187,9 +212,7 @@ ax.set_ylabel("Jumlah Order", fontsize=12)  # Menambahkan keterangan sumbu y den
 st.pyplot(fig)
 
 
-# ========================================================================================
-# ================================ Most & Least Products =================================
-# ========================================================================================
+# ================================ PRODUK PALING LAKU =================================
 
 import streamlit as st
 import matplotlib.pyplot as plt
@@ -235,10 +258,7 @@ for bar in ax[1].patches:
 st.pyplot(fig)
 
 
-# ========================================================================================
 # ============================= RATING LAYANAN PELANGGAN =================================
-# ========================================================================================
-
 
 # Fungsi untuk menampilkan plot menggunakan Streamlit
 def show_barplot(review_scores, most_common_score):
@@ -278,16 +298,13 @@ st.title("Rating Layanan dari Pelanggan")
 show_barplot(rating_service, most_common_score)
 
 
-# ========================================================================================
 # ======================================== RFM ===========================================
-# ========================================================================================
 st.subheader("RFM Best Value")
 
 
 colors = ["#53ECEC", "#53ECEC", "#53ECEC", "#53ECEC", "#53ECEC"]
 
-
-######################################3
+######################################
 import matplotlib.pyplot as plt
 import seaborn as sns
 import streamlit as st
@@ -342,3 +359,108 @@ with tab3:
     plt.xlabel("customer_id")
     plt.xticks([])
     st.pyplot(fig)
+
+
+# ========================================DEMOGRAFI=======================================
+
+import streamlit as st
+import pandas as pd
+
+# Load data
+all_df = pd.read_csv("all_data.csv")
+
+# Calculate customer count by state
+bystate_df = all_df.groupby(by="customer_state").customer_id.nunique().reset_index()
+bystate_df.rename(columns={"customer_id": "customer_count"}, inplace=True)
+
+# Main content
+st.title("Demografi Pelanggan")
+
+# Add empty columns to center the DataFrame
+left_column, center_column, right_column = st.columns([1, 4, 1])
+
+# Add the DataFrame to the center column
+with center_column:
+    st.write(bystate_df)
+
+
+import streamlit as st
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Load data
+all_df = pd.read_csv("all_data.csv")
+
+# Function to create visualization for customer city
+def plot_customer_city():
+    bycity_df = all_df['customer_city'].value_counts().head(10)
+
+    plt.figure(figsize=(12, 6))
+
+    most_common_city = bycity_df.idxmax()
+
+    bycity_df = bycity_df.sort_values(ascending=False)
+
+    # Define colors and edge colors
+    colors = ["#53ECEC" if city == most_common_city else "#D3D3D3" for city in bycity_df.index]
+    edge_colors = ["black" if city == most_common_city else "none" for city in bycity_df.index]
+
+    sns.barplot(x=bycity_df.index,
+                y=bycity_df.values,
+                palette=colors,
+                edgecolor=edge_colors,
+                linewidth=1.5
+                )
+
+    plt.title("Jumlah Pelanggan dari Tiap Kota", fontsize=20)
+    plt.xlabel("Kota", fontsize=14)
+    plt.ylabel("Jumlah Pelanggan", fontsize=14)
+    plt.xticks(rotation=45, fontsize=10)
+
+    # Display the plot in Streamlit
+    st.pyplot(plt)
+
+# Function to create visualization for customer state
+def plot_customer_state():
+    bystate_df = all_df.groupby(by="customer_state").customer_id.nunique().reset_index()
+    bystate_df.rename(columns={"customer_id": "customer_count"}, inplace=True)
+
+    plt.figure(figsize=(12, 6))
+
+    most_common_state = bystate_df.loc[bystate_df['customer_count'].idxmax(), 'customer_state']
+
+    bystate_df = bystate_df.sort_values(by='customer_count', ascending=False)
+
+    # Define colors and edge colors
+    colors = ["#53ECEC" if state == most_common_state else "#D3D3D3" for state in bystate_df['customer_state']]
+    edge_colors = ["black" if state == most_common_state else "none" for state in bystate_df['customer_state']]
+
+    sns.barplot(x='customer_state',
+                y='customer_count',
+                data=bystate_df,
+                palette=colors,
+                edgecolor=edge_colors,
+                linewidth=1.5
+                )
+
+    plt.title("Jumlah Pelanggan dari Tiap Negara Bagian", fontsize=20)
+    plt.xlabel("Negara Bagian", fontsize=14)
+    plt.ylabel("Jumlah Pelanggan", fontsize=14)
+    plt.xticks(fontsize=10)
+
+    # Display the plot in Streamlit
+    st.pyplot(plt)
+
+# Main content
+st.title("DEMOGRAFI PELANGGAN E-COMMERCE")
+
+# Add the visualizations to the Streamlit app side by side
+st.subheader("Visualisasi Jumlah Pelanggan")
+col1, col2 = st.columns(2)  # Membagi tata letak menjadi dua kolom
+
+with col1:
+    plot_customer_city()
+
+with col2:
+    plot_customer_state()
