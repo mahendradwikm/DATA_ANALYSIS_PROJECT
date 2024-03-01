@@ -20,6 +20,18 @@ Proyek ini bertujuan untuk melakukan analisis terhadap dataset E-Commerce publik
    git clone https://github.com/mahendradwikm/DATA_ANALYSIS_PROJECT.git
    ```
 
+## Setup environment
+```
+conda create --name main-ds python=3.9
+conda activate main-ds
+pip install numpy pandas scipy matplotlib seaborn jupyter streamlit babel
+```
+
+## Run steamlit app
+```
+streamlit run dashboard.py
+```
+
 ## Acknowledgements
 
 - Terima kasih khusus kepada [Kaggle](https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce) atas penyediaan dataset E-Commerce.
