@@ -39,6 +39,7 @@ streamlit run dashboard.py
 - Kami mengucapkan terima kasih kepada rekan-rekan dan kontributor kami atas dukungan dan wawasan mereka sepanjang proyek.
 
 
-                                                                                                                                                      
-                                                                                                                                                      
-                                                                                                                                                                            Salam Hangat
+## This is My Rating from Reviewer
+
+![image](https://github.com/mahendradwikm/DATA_ANALYSIS_PROJECT/assets/94824071/0fd479cd-70ed-457c-a986-e61ca129d603)
+
